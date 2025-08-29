@@ -56,12 +56,6 @@ type Product = {
   description: string;
 };
 
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
-
 async function getProduct(id: string): Promise<Product | null> {
   const res = await fetch(`https://fakestoreapi.com/products/${id}`, {
     cache: 'no-store',
@@ -69,11 +63,10 @@ async function getProduct(id: string): Promise<Product | null> {
 
   if (!res.ok) return null;
 
-  const product = await res.json();
-  return product;
+  return res.json();
 }
 
-export default async function ProductPage({ params }: PageProps) {
+export default async function Page({ params }: { params: { id: string } }) {
   const product = await getProduct(params.id);
 
   if (!product) return notFound();
@@ -98,3 +91,4 @@ export default async function ProductPage({ params }: PageProps) {
     </article>
   );
 }
+
